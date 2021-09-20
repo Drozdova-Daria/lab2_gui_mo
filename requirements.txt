@@ -1,4 +1,4 @@
 flake8
-pytest
+unittest
 PyQt5
 numpy
