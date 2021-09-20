@@ -1,4 +1,4 @@
-import unittest
+import pytest
 from app.transport_methods import northwest_corner, solve_transport_task, calculate_cost
 
 
@@ -15,27 +15,23 @@ def compare_matrix(a1, a2):
     return True
 
 
-class TransportTaskTest(unittest.TestCase):
-    def setUp(self):
-        self.cost_table = [[5, 3, 1], [3, 2, 4], [4, 1, 2]]
-        self.providers = [10, 20, 30]
-        self.consumers1 = [15, 20, 25]
-        self.consumers2 = [10, 20, 25]
-        self.northwest_corner = [[10, ' ', ' '], [5, 15, ' '], [' ', 5, 25]]
-        self.solution = [[' ', ' ', 10], [15, 5, ' '], [' ', 15, 15]]
-        self.cost = 110
+cost_table = [[5, 3, 1], [3, 2, 4], [4, 1, 2]]
+providers = [10, 20, 30]
+consumers1 = [15, 20, 25]
+consumers2 = [10, 20, 25]
+northwest_corner_sol = [[10, ' ', ' '], [5, 15, ' '], [' ', 5, 25]]
+solution = [[' ', ' ', 10], [15, 5, ' '], [' ', 15, 15]]
+cost = 110
 
-    def test_northwest_corner(self):
-        message = 'northwest_corner returns an incorrect solution'
-        self.assertTrue(compare_matrix(northwest_corner(self.providers, self.consumers1), self.northwest_corner),
-                        msg=message)
-        self.assertTrue(compare_matrix(northwest_corner(self.providers, self.consumers2), []), msg=message)
 
-    def test_solve_transport_task(self):
-        message = 'solve_transport_task return an incorrect solution'
-        self.assertTrue(compare_matrix(solve_transport_task(self.northwest_corner, self.cost_table), self.solution),
-                        msg=message)
+def test_northwest_corner():
+    assert compare_matrix(northwest_corner(providers, consumers1), northwest_corner_sol) is True
+    assert compare_matrix(northwest_corner(providers, consumers2), []) is True
 
-    def test_calculate_cost(self):
-        message = 'calculate_cost return an incorrect solution'
-        self.assertEqual(abs(calculate_cost(self.solution, self.cost_table) - self.cost), 0, msg=message)
+
+def test_solve_transport_task():
+    assert compare_matrix(solve_transport_task(northwest_corner_sol, cost_table), solution) is True
+
+
+def test_calculate_cost():
+    assert abs(calculate_cost(solution, cost_table) - cost) == 0
