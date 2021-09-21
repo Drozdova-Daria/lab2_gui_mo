@@ -1,4 +1,0 @@
-flake8
-pytest
-PyQt5
-numpy
